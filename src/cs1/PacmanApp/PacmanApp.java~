@@ -1,0 +1,100 @@
+
+package cs1.PacmanApp;
+
+import  cs1.app.*;
+import java.io.*;
+
+public class PacmanApp
+{
+    void drawDotsRow(double startX, double startY, double dotsDist, int n)
+    {
+        double curX = startX;
+        double curY = startY;
+        int radius = 6;
+        int noOfPellet = 0;
+        
+        while( noOfPellet < n )
+        {
+            canvas.drawCircle(curX, curY, radius, "red" );
+            noOfPellet = noOfPellet + 1;
+            curX = curX + dotsDist;
+        }
+    }
+    
+    void movePacmanAlongRow( double startX, double startY, double endX, double speed)
+    {
+        double centerX = startX;
+        double centerY = startY;
+        double radius = 14;
+        double startAngle = 30;
+        double pieAngle = 300;
+
+        while( centerX < endX )
+        {
+            canvas.drawPie( centerX, centerY, radius, startAngle, pieAngle, "yellow" );
+            canvas.sleep(0.5);
+            canvas.drawCircle( centerX, centerY, radius, "yellow" );
+            canvas.sleep(0.5);
+            canvas.drawCircle( centerX, centerY, radius, "white" );
+            canvas.sleep(0.1);
+            
+            centerX = centerX + speed; //change this 40 to variable
+        } 
+    }
+    
+    void drawDotsGrid( double startX, double startY, double horizDist, double vertDist, int numRows, int numCols )
+    {
+        double curX = startX;
+        double curY = startY;
+        
+        int curRow = 1;
+        while( curRow <= numRows )
+        {
+            drawDotsRow( curX, curY, horizDist, numCols );
+            curY = curY + vertDist;
+            
+            curRow = curRow + 1;
+        }
+    }
+    
+    void movePacmanAlongGrid ( double startX, double startY, double endX, double rowSpacing, int numRows, double speed )
+    {  
+        double curX = startX;
+        double curY = startY;
+        
+        int curRow = 1;
+        while( curRow <= numRows )
+        {
+            movePacmanAlongRow( curX, curY, endX, speed );
+            curY = curY + rowSpacing;
+            
+            curRow = curRow + 1;
+        }
+    }
+    
+    void playPacmanGame( int numRows, int numCols, double speed )
+    {  
+        double horiSpacing = canvas.getWidth() / numCols;
+        double vertSpacing = canvas.getHeight() / numRows;
+        
+        double startX = horiSpacing / 2;
+        double startY = vertSpacing / 2;
+        
+        double endX = canvas.getWidth();
+        
+        drawDotsGrid( startX, startY, horiSpacing, vertSpacing, numRows, numCols );
+        movePacmanAlongGrid( startX, startY, endX, vertSpacing, numRows, speed );       
+    }
+    
+    public void run()
+    {
+        //canvas.setBackground( "black" );
+        //drawDotsRow( 40, 170, 40, 8 );
+        //drawDotsGrid( 40, 70, 40, 30, 7, 6 );
+        //movePacmanAlongRow( 40, 70, 360, 10 );
+        //movePacmanAlongGrid( 40, 70, 245, 30, 7, 40 );
+        //playPacmanGame( 4, 3, 20 );
+        playPacmanGame( 6, 6, 60 );
+    }
+}
+
